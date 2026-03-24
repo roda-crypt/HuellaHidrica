@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Huella Hídrica</title>
+    <link rel="icon" href="/img/gota-de-agua.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <span>Calculadora de Huella Hídrica</span>
+                </div>
+                <nav class="nav">
+                    <a href="#inicio" class="nav-link">Inicio</a>
+                    <a href="#calculadora" class="nav-link">Calculadora</a>
+                    <a href="#resultados" class="nav-link">Resultados</a>
+                    <a href="#acerca" class="nav-link">Acerca de</a>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Descubre tu <span class="highlight">Huella Hídrica</span></h1>
+                    <p>Calcula tu consumo diario de agua y aprende cómo reducirlo para proteger nuestro planeta</p>
+                    <div class="hero-buttons">
+                        <a href="#calculadora" class="btn btn-primary btn-large">
+                            <i class="fas fa-calculator"></i>
+                            Comenzar Cálculo
+                        </a>
+                        <a href="#acerca" class="btn btn-secondary btn-large">
+                            <i class="fas fa-info-circle"></i>
+                            Más Información
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="water-drop-animation">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- Elemento para mostrar nombre en la animación -->
+        <div class="user-badge" id="userBadge" style="display: none;">
+            <i class="fas fa-user"></i>
+            <span id="badgeUserName"></span>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="wave-animation">
+            <svg viewBox="0 0 1440 320">
+                <path fill="#f0f9ff" fill-opacity="1"
+                    d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+                </path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator-section" id="calculadora">
+        <div class="container">
+            <div class="section-header">
+                <h2>Calculadora de Huella Hídrica</h2>
+                <p>Responde las siguientes preguntas para calcular tu consumo diario de agua</p>
+            </div>
+
+            <!-- Form Container -->
+            <div class="form-wrapper">
+                <form id="waterForm" class="water-form">
+                    <!-- Progress Indicators -->
+                    <div class="progress-indicator">
+                        <div class="step-indicator active" data-step="0">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Alimentación</div>
+                        </div>
+                        <div class="step-indicator" data-step="1">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Hogar</div>
+                        </div>
+                        <div class="step-indicator" data-step="2">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Transporte</div>
+                        </div>
+                        <div class="step-indicator" data-step="3">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Consumo</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="userNameInput">
+                        <p> &nbsp;</p>
+                         <i class="fas fa-user"></i>  &nbsp;Tu nombre
+                    </label>
+                    <br>
+                    <input type="text" id="userNameInput" placeholder="Ingresa tu nombre" required>
+                </div>
+                    
+                <!-- Step 1: Food -->
+                    <div class="step active" id="step1">
+                        <div class="form-card">
+                            <div class="step-header">
+                                <i class="fas fa-utensils"></i>
+                                <h3>Paso 1: Alimentación</h3>
+                                <p>¿Cuántas porciones consumes a la semana?</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meat">
+                                    <i class="fas fa-drumstick-bite"></i>
+                                    Carne roja
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="meat" min="0" max="14" value="5" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="meatValue">5</span>
+                                        <span class="value-unit">porciones/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dairy">
+                                    <i class="fas fa-cheese"></i>
+                                    Productos lácteos
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="dairy" min="0" max="21" value="7" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="dairyValue">7</span>
+                                        <span class="value-unit">porciones/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="vegetables">
+                                    <i class="fas fa-carrot"></i>
+                                    Verduras
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="vegetables" min="0" max="35" value="14" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="vegetablesValue">14</span>
+                                        <span class="value-unit">porciones/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fruits">
+                                    <i class="fas fa-apple-alt"></i>
+                                    Frutas
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="fruits" min="0" max="35" value="14" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="fruitsValue">14</span>
+                                        <span class="value-unit">porciones/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Home -->
+                    <div class="step" id="step2">
+                        <div class="form-card">
+                            <div class="step-header">
+                                <i class="fas fa-home"></i>
+                                <h3>Paso 2: Hogar</h3>
+                                <p>¿Cuál es tu consumo diario en casa?</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="showers">
+                                    <i class="fas fa-shower"></i>
+                                    Tiempo de ducha
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="showers" min="5" max="30" value="10" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="showersValue">10</span>
+                                        <span class="value-unit">minutos/día</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="toilet">
+                                    <i class="fas fa-toilet"></i>
+                                    Descargas del inodoro
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="toilet" min="1" max="10" value="5" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="toiletValue">5</span>
+                                        <span class="value-unit">veces/día</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="laundry">
+                                    <i class="fas fa-tshirt"></i>
+                                    Lavado de ropa
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="laundry" min="0" max="14" value="3" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="laundryValue">3</span>
+                                        <span class="value-unit">cargas/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dishwasher">
+                                    <i class="fas fa-sink"></i>
+                                    Uso del lavavajillas
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="dishwasher" min="0" max="14" value="3" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="dishwasherValue">3</span>
+                                        <span class="value-unit">cargas/semana</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Transport -->
+                    <div class="step" id="step3">
+                        <div class="form-card">
+                            <div class="step-header">
+                                <i class="fas fa-car"></i>
+                                <h3>Paso 3: Transporte</h3>
+                                <p>¿Cómo te desplazas habitualmente?</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="car">
+                                    <i class="fas fa-car-side"></i>
+                                    Uso de coche
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="car" min="0" max="100" value="20" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="carValue">20</span>
+                                        <span class="value-unit">km/día</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="publicTransport">
+                                    <i class="fas fa-bus"></i>
+                                    Transporte público
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="publicTransport" min="0" max="50" value="10" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="publicTransportValue">10</span>
+                                        <span class="value-unit">km/día</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="flights">
+                                    <i class="fas fa-plane"></i>
+                                    Vuelos al año
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="flights" min="0" max="20" value="2" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="flightsValue">2</span>
+                                        <span class="value-unit">vuelos/año</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Consumption -->
+                    <div class="step" id="step4">
+                        <div class="form-card">
+                            <div class="step-header">
+                                <i class="fas fa-shopping-bag"></i>
+                                <h3>Paso 4: Consumo</h3>
+                                <p>¿Cuál es tu patrón de consumo?</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="clothing">
+                                    <i class="fas fa-tshirt"></i>
+                                    Compra de ropa
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="clothing" min="0" max="20" value="3" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="clothingValue">3</span>
+                                        <span class="value-unit">prendas/mes</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="electronics">
+                                    <i class="fas fa-laptop"></i>
+                                    Compra de electrónica
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="electronics" min="0" max="12" value="1" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="electronicsValue">1</span>
+                                        <span class="value-unit">artículos/año</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="paper">
+                                    <i class="fas fa-newspaper"></i>
+                                    Consumo de papel
+                                </label>
+                                <div class="range-container">
+                                    <input type="range" id="paper" min="0" max="100" value="20" class="slider">
+                                    <div class="range-fill"></div>
+                                    <div class="range-value">
+                                        <span class="value-number" id="paperValue">20</span>
+                                        <span class="value-unit">hojas/día</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Calculate Button -->
+            <div class="calculate-section">
+                <button type="button" class="btn btn-primary btn-large calculate-btn" id="calculateBtn">
+                    <i class="fas fa-calculator"></i>
+                    Calcular mi Huella Hídrica
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="resultados" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tus Resultados</h2>
+                <p>Este es tu consumo diario de agua</p>
+            </div>
+
+            <div class="results-container">
+                <!-- Main Result Card -->
+                <div class="result-card main-result">
+                    <div class="result-header">
+                        <i class="fas fa-tint"></i>
+                        <h3>Tu Huella Hídrica Diaria</h3>
+                    </div>
+                    <div class="result-amount">
+                        <span class="amount-number" id="totalWaterAmount">0</span>
+                        <span class="amount-unit">litros/día</span>
+                    </div>
+                    <div class="result-comparison" id="waterComparison">
+                        Comparando con el promedio mundial...
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="category-icon food">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h4>Alimentación</h4>
+                        <p class="category-amount" id="foodWater">0 L/día</p>
+                    </div>
+                    <div class="result-card">
+                        <div class="category-icon home">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h4>Hogar</h4>
+                        <p class="category-amount" id="homeWater">0 L/día</p>
+                    </div>
+                    <div class="result-card">
+                        <div class="category-icon transport">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h4>Transporte</h4>
+                        <p class="category-amount" id="transportWater">0 L/día</p>
+                    </div>
+                    <div class="result-card">
+                        <div class="category-icon consumption">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <h4>Consumo</h4>
+                        <p class="category-amount" id="consumptionWater">0 L/día</p>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-container">
+                    <canvas id="waterChart"></canvas>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="tips-section">
+                    <h3><i class="fas fa-lightbulb"></i> Consejos para Reducir tu Huella Hídrica</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <i class="fas fa-shower"></i>
+                            <h4>Reduce el tiempo de ducha</h4>
+                            <p>Cada minuto menos en la ducha ahorra hasta 10 litros de agua</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-carrot"></i>
+                            <h4>Consume más vegetales</h4>
+                            <p>La producción de vegetales usa menos agua que la carne</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-recycle"></i>
+                            <h4>Reutiliza y recicla</h4>
+                            <p>Reciclar una tonelada de papel ahorra 26,500 litros de agua</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-bus"></i>
+                            <h4>Usa transporte público</h4>
+                            <p>Comparte coche o usa transporte público para reducir el consumo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="downloadBtn">
+                        <i class="fas fa-file-pdf"></i> Descargar PDF
+                    </button>
+                    <button class="btn btn-secondary" id="restartBtn">
+                        <i class="fas fa-redo"></i> Volver a Calcular
+                    </button>
+                    <button class="btn btn-secondary" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Compartir Resultados
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="acerca">
+        <div class="container">
+            <div class="section-header">
+                <h2>Acerca de la Calculadora de Huella Hídrica</h2>
+                <p>Conoce más sobre tu huella hídrica</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>¿Qué es la Huella Hídrica?</h3>
+                    <p>La huella hídrica es el volumen total de agua dulce utilizada para producir los bienes y
+                        servicios consumidos por un individuo, comunidad o empresa.</p>
+
+                    <h3>¿Por qué es importante?</h3>
+                    <p>Conocer tu huella hídrica te ayuda a entender tu impacto en los recursos hídricos del planeta y
+                        te permite tomar decisiones más conscientes para reducir tu consumo.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">3,800</span>
+                            <span class="stat-label">Litros/día promedio mundial</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">70%</span>
+                            <span class="stat-label">Del agua dulce se usa en agricultura</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">2,100</span>
+                            <span class="stat-label">Millones sin acceso al agua potable</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="water-stats-animation">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-tint"></i>
+                        <span>Calculadora de Huella Hídrica</span>
+                    </div>
+                    <p>Calculadora de huella hídrica para un futuro sostenible</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/UtecVerde" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/rdro.crypt?igsh=MW9qbTl1dnozOWIyNA==" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#calculadora">Calculadora</a></li>
+                        <li><a href="#resultados">Resultados</a></li>
+                        <li><a href="#acerca">Acerca de</a></li>
+                    </ul>
+                </div>
+
+               
+
+                <div class="footer-section">
+                    <h4>Creadores</h4>
+                    <img src="/img/utecverde.png" alt="50%" class="creator-logo" width="50%">
+                    
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 UTEC Verde. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
